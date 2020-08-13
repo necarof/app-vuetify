@@ -33,7 +33,9 @@
       >
       </v-app-bar-nav-icon>
 
-      <v-toolbar-title>Vuetify Application</v-toolbar-title>
+      <v-toolbar-title>
+        <router-link to="/" tag="span" class="pointer">Vuetify Application</router-link>
+      </v-toolbar-title>
 
       <v-spacer></v-spacer>
 
@@ -71,3 +73,9 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+  .pointer {
+    cursor: pointer;
+  }
+</style>
