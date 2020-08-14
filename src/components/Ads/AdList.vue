@@ -1,8 +1,34 @@
 <template>
   <v-container>
     <v-layout row>
-      <v-flex xs12>
-        <h1>Ad list</h1>
+      <v-flex xs12 sm6 offset-sm3>
+        <h1 class="text--secondary mt-3 mb-3">Ad list</h1>
+        <v-card
+          v-for="ad in ads"
+          :key="ad.id"
+          class="mb-5"
+        >
+          <v-layout>
+            <v-col cols="auto">
+              <v-img
+                height="160"
+                width="160"
+                :src="ad.imageSrc"
+              ></v-img>
+            </v-col>
+            <v-row>
+              <v-col>
+                <v-card-text>
+                  <h2 class="text--primary">{{ ad.title }}</h2>
+                  <p>{{ ad.description }}</p>
+                </v-card-text>
+                <v-card-actions>
+                  <v-btn class="info" :to="'/ad/' + ad.id">Open</v-btn>
+                </v-card-actions>
+              </v-col>
+            </v-row>  
+          </v-layout>
+        </v-card>
       </v-flex>
     </v-layout>
   </v-container>
@@ -11,7 +37,17 @@
 <script>
 export default {
   data () {
-    return {}
+    return {
+      ads: [
+        {
+          title: 'First ad',
+          description: 'First ad description',
+          promo: true,
+          imageSrc: 'https://avatars.mds.yandex.net/get-pdb/33827/4003fa51-0bba-4007-b6da-ee88d2ddb99f/s1200',
+          id: 'img1'
+        },
+      ]
+    }
   }
 }
 </script>
