@@ -58,10 +58,11 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn 
+            <v-btn
+              :loading="loading"
               color="primary"
               @click="onSubmit"
-              :disabled="!valid"
+              :disabled="!valid || loading"
             >
               Create account
             </v-btn>
@@ -94,6 +95,11 @@ export default {
       ]
     }
   },
+  computed: {
+    loading () {
+      return this.$store.getters.loading
+    }
+  },
   methods: {
     onSubmit () {
       if (this.$refs.form.validate()) {
@@ -101,7 +107,11 @@ export default {
           email: this.email,
           password: this.password,
         }
-        console.log(user)
+        this.$store.dispatch('registerUser', user)
+        .then (() => {
+          this.$router.push('/')
+        })
+        .catch (err => console.log(err))
       }
     },
   }
