@@ -3,11 +3,7 @@
     <v-layout row>
       <v-flex sm6 offset-sm3>
         <h1 class="text--secondary mt-3 mb-3">Create new ad</h1>
-        <v-form
-          ref="form"
-          v-model="valid"
-          validation
-        >
+        <v-form ref="form" v-model="valid" validation>
           <v-text-field
             label="Ad title"
             name="title"
@@ -28,29 +24,16 @@
         </v-form>
         <v-layout>
           <v-flex xs12>
-            <v-btn
-              color="blue-grey"
-              class="ma-2 white--text"
-            >
+            <v-btn color="blue-grey" class="ma-2 white--text">
               Upload
               <v-icon right dark>mdi-cloud-upload</v-icon>
             </v-btn>
-            <v-switch
-              v-model="promo"
-              label="Ad to promo image?"
-            ></v-switch>
-            <img src="https://avatars.mds.yandex.net/get-pdb/33827/4003fa51-0bba-4007-b6da-ee88d2ddb99f/s1200" height="100">
+            <v-switch v-model="promo" label="Ad to promo image?"></v-switch>
           </v-flex>
         </v-layout>
         <v-layout mt-3>
           <v-flex>
-            <v-btn
-              color="success"
-              @click="createAd"
-              :disabled="!valid"
-            >
-              Create ad
-            </v-btn>
+            <v-btn color="success" @click="createAd" :disabled="!valid">Create ad</v-btn>
           </v-flex>
         </v-layout>
       </v-flex>
@@ -60,25 +43,26 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
-      title: '',
-      description: '',
+      title: "",
+      description: "",
       promo: false,
-      valid: false
-    }
+      valid: false,
+    };
   },
   methods: {
-    createAd () {
+    createAd() {
       if (this.$refs.form.validate()) {
         const ad = {
           title: this.title,
           description: this.description,
-          promo: this.promo
+          promo: this.promo,
+          imageSrc: "https://avatars.mds.yandex.net/get-pdb/224463/a7b71705-312b-456a-b957-81a00e1691e2/s1200",
         }
-        console.log(ad)
+        this.$store.dispatch("createAd", ad);
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
