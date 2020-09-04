@@ -2,16 +2,11 @@
   <v-container>
     <v-layout row>
       <v-flex xs12>
-        <v-card
-          class="mb-5"
-        >
-          <v-img
-            height="300"
-            src="https://im0-tub-ru.yandex.net/i?id=15268ef922a90109a7054a5af9736ab2-l&n=13"
-          ></v-img>
+        <v-card class="mb-5">
+          <v-img height="300" :src="ad.imageSrc"></v-img>
           <v-card-text>
-            <h2 class="text--primary">Lorem</h2>
-            <p>Lorem 12342343234</p>
+            <h2 class="text--primary">{{ ad.title }}</h2>
+            <p>{{ ad.description }}</p>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -26,8 +21,15 @@
 
 <script>
 export default {
-  data () {
-    return {}
-  }
-}
+  props: ["id"],
+  data() {
+    return {};
+  },
+  computed: {
+    ad() {
+      const id = this.id;
+      return this.$store.getters.adById(id);
+    },
+  },
+};
 </script>

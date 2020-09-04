@@ -10,9 +10,8 @@ import Orders from '@/components/User/Orders'
 
 Vue.use(Router)
 
-export default new Router ({
-  routes: [
-    {
+export default new Router({
+  routes: [{
       path: '',
       name: 'home',
       component: Home
@@ -20,6 +19,7 @@ export default new Router ({
 
     {
       path: '/ad/:id',
+      props: true,
       name: 'ad',
       component: Ad
     },

@@ -1,7 +1,6 @@
 export default {
   state: {
-    ads: [
-      {
+    ads: [{
         title: 'First ad',
         description: 'First ad description',
         promo: false,
@@ -24,20 +23,33 @@ export default {
       },
     ]
   },
-  mutations: {},
-  actions: {},
+  mutations: {
+    createAd (state, payload) {
+      state.ads.push(payload)
+    }
+  },
+  actions: {
+    createAd({commit}, payload) {
+      payload.id = 'Static string'
+      commit('createAd', payload)
+    }
+  },
   getters: {
-    ads (state) {
+    ads(state) {
       return state.ads
     },
-    promoAds (state) {
+    promoAds(state) {
       return state.ads.filter(ad => {
         return ad.promo
       })
     },
-    myAds (state) {
+    myAds(state) {
       return state.ads
     },
-
+    adById(state) {
+      return adId => {
+        return state.ads.find(ad => ad.id === adId)
+      }
+    }
   }
 }
