@@ -54,6 +54,32 @@
     <v-main>
       <router-view></router-view>
     </v-main>
+
+    <template v-if="error">
+      <v-snackbar
+        :color="color"
+        :multi-line="mode === true"
+        :right="x === 'right'"
+        :timeout="timeout"
+        :top="y === 'top'"
+        :vertical="mode === 'vertical'"
+        @input="closeError"
+        :value="true"
+      >
+        {{ error }}
+
+        <template v-slot:action="{ attrs }">
+          <v-btn
+            dark
+            text
+            v-bind="attrs"
+            @click="snackbar = false"
+          >
+            Close
+          </v-btn>
+        </template>
+      </v-snackbar>
+    </template>  
   </v-app>
 </template>
 
@@ -69,8 +95,23 @@ export default {
         {title: 'New ad', icon: 'note_add', url: '/new'},
         {title: 'My ads', icon: 'list', url: '/list'}
       ],
+      color: 'error',
+      timeout: 5000,
+      x: null,
+      y: 'top',
+      mode: '',
     }
-  }
+  },
+  computed: {
+    error () {
+      return this.$store.getters.error
+    }
+  },
+  methods: {
+    closeError () {
+      this.$store.dispatch('closeError')
+    }
+  },
 };
 </script>
 
