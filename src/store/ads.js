@@ -18,7 +18,7 @@ export default {
         title: 'Third ad',
         description: 'Third ad description',
         promo: true,
-        imageSrc: 'https://img4.goodfon.ru/original/1920x1280/f/e1/burgery-bulochki-ovoshchi-miaso.jpg',
+        imageSrc: 'https://a.d-cd.net/X4AAAgP1QeA-960.jpg',
         id: 'img3'
       },
     ]
