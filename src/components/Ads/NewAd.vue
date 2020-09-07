@@ -58,7 +58,7 @@ export default {
           title: this.title,
           description: this.description,
           promo: this.promo,
-          imageSrc: "https://avatars.mds.yandex.net/get-pdb/224463/a7b71705-312b-456a-b957-81a00e1691e2/s1200",
+          imageSrc: "https://a.d-cd.net/X4AAAgP1QeA-960.jpg",
         }
         this.$store.dispatch("createAd", ad);
       }
