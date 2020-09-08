@@ -33,7 +33,12 @@
         </v-layout>
         <v-layout mt-3>
           <v-flex>
-            <v-btn color="success" @click="createAd" :disabled="!valid">Create ad</v-btn>
+            <v-btn
+              :loading="loading"
+              color="success"
+              @click="createAd"
+              :disabled="!valid || loading"
+            >Create ad</v-btn>
           </v-flex>
         </v-layout>
       </v-flex>
@@ -51,6 +56,11 @@ export default {
       valid: false,
     };
   },
+  computed: {
+    loading () {
+      return this.$store.getters.loading
+    }
+  },
   methods: {
     createAd() {
       if (this.$refs.form.validate()) {
@@ -58,9 +68,13 @@ export default {
           title: this.title,
           description: this.description,
           promo: this.promo,
-          imageSrc: "https://a.d-cd.net/X4AAAgP1QeA-960.jpg",
+          imageSrc: "https://cdn.stocksnap.io/img-thumbs/960w/hollywood-california_6FK4YLS5LI.jpg",
         }
-        this.$store.dispatch("createAd", ad);
+        this.$store.dispatch("createAd", ad)
+          .then(() => {
+            this.$router.push('/list')
+          })
+          .catch(() => {})
       }
     },
   },
