@@ -24,11 +24,21 @@
         </v-form>
         <v-layout>
           <v-flex xs12>
-            <v-btn color="blue-grey" class="ma-2 white--text">
+            <v-btn color="blue-grey" class="ma-2 white--text" @click="triggerUpload">
               Upload
               <v-icon right dark>mdi-cloud-upload</v-icon>
             </v-btn>
+            <input 
+              type="file" 
+              style="display: none" 
+              accept="image/*"
+              ref="fileInput"
+              @change="onFileChange"
+            >
             <v-switch v-model="promo" label="Ad to promo image?"></v-switch>
+          </v-flex>
+          <v-flex>
+            <img :src="imageSrc" alt="promo img" height="100" v-if="imageSrc">
           </v-flex>
         </v-layout>
         <v-layout mt-3>
@@ -37,7 +47,7 @@
               :loading="loading"
               color="success"
               @click="createAd"
-              :disabled="!valid || loading"
+              :disabled="!valid || !image || loading"
             >Create ad</v-btn>
           </v-flex>
         </v-layout>
@@ -50,10 +60,12 @@
 export default {
   data() {
     return {
-      title: "",
-      description: "",
+      title: '',
+      description: '',
       promo: false,
       valid: false,
+      image: null,
+      imageSrc: ''
     };
   },
   computed: {
@@ -63,12 +75,12 @@ export default {
   },
   methods: {
     createAd() {
-      if (this.$refs.form.validate()) {
+      if (this.$refs.form.validate() && this.image) {
         const ad = {
           title: this.title,
           description: this.description,
           promo: this.promo,
-          imageSrc: "https://cdn.stocksnap.io/img-thumbs/960w/hollywood-california_6FK4YLS5LI.jpg",
+          image: this.image
         }
         this.$store.dispatch("createAd", ad)
           .then(() => {
@@ -77,6 +89,18 @@ export default {
           .catch(() => {})
       }
     },
+    triggerUpload () {
+      this.$refs.fileInput.click()
+    },
+    onFileChange (event) {
+      const file = event.target.files[0]
+      const reader = new FileReader()
+      reader.onload = () => {
+        this.imageSrc = reader.result;
+      }
+      reader.readAsDataURL(file)
+      this.image = file
+    }
   },
 };
 </script>
