@@ -4,7 +4,6 @@ class Ad {
   constructor(title, description, imageSrc = '', promo = false, id = null) {
     this.title = title
     this.description = description
-    //this.ownerId = ownerId
     this.imageSrc = imageSrc
     this.promo = promo
     this.id = id
@@ -24,26 +23,36 @@ export default {
     }
   },
   actions: {
-    async createAd ({commit, getters}, payload) {
+    async createAd ({commit}, payload) {
       commit('clearError')
       commit('setLoading', true)
+
+      const image = payload.image
 
       try {
         const newAd = new Ad(
           payload.title, 
           payload.description,
-          //payload.ownerId,
-          payload.imageSrc, 
-          payload.promo,
-          getters.user.id
+          '', 
+          payload.promo
         )
 
         const ad = await fb.database().ref('ads').push(newAd)
+        const imageExt = image.name.slice(image.name.lastIndexOf('.'))
+
+        const fileData = await fb.storage().ref(`ads/${ad.key}${imageExt}`).put(image)
+        const imageSrc = await fileData.ref.getDownloadURL();
+
+
+        await fb.database().ref('ads').child(ad.key).update({
+          imageSrc
+        })
         
         commit('setLoading', false)
         commit('createAd', {
           ...newAd,
-          id: ad.key
+          id: ad.key,
+          imageSrc
         })
       } catch (error) {
         commit('setError', error.message)
@@ -62,13 +71,16 @@ export default {
         const fbVal = await fb.database().ref('ads').once('value')
         const ads = fbVal.val()
         
-        Object.keys(ads).forEach(key => {
-          const ad = ads[key]
-          resultAds.push(
-            new Ad(ad.title, ad.description, ad.imageSrc, ad.promo, key)
-          )
-        })
-        commit('loadAds', resultAds)
+        if (ads) {
+          Object.keys(ads).forEach(key => {
+            const ad = ads[key]
+            resultAds.push(
+              new Ad(ad.title, ad.description, ad.imageSrc, ad.promo, key)
+            )
+          })
+          commit('loadAds', resultAds)
+        }
+        
 
         commit('setLoading', false)
       } catch (error) {
