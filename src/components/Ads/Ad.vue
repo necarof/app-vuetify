@@ -13,7 +13,9 @@
             <EditAdModal 
               :ad="ad"
             />
-            <v-btn color="success" class="ml-3">Buy</v-btn>
+            <div class="ml-3">
+              <app-buy-modal :ad="ad"></app-buy-modal>
+            </div>
           </v-card-actions>
         </v-card>
         <div v-else class="text-center">
