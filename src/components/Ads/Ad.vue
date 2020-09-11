@@ -2,7 +2,7 @@
   <v-container>
     <v-layout row>
       <v-flex xs12>
-        <v-card class="mb-5">
+        <v-card class="mb-5" v-if="!loading">
           <v-img height="300" :src="ad.imageSrc"></v-img>
           <v-card-text>
             <h2 class="text--primary">{{ ad.title }}</h2>
@@ -10,16 +10,29 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="warning">Edit</v-btn>
-            <v-btn color="success">Buy</v-btn>
+            <EditAdModal 
+              :ad="ad"
+            />
+            <div class="ml-3">
+              <app-buy-modal :ad="ad"></app-buy-modal>
+            </div>
           </v-card-actions>
         </v-card>
+        <div v-else class="text-center">
+          <v-progress-circular
+            :size="100"
+            color="primary"
+            indeterminate
+          ></v-progress-circular>
+        </div>
       </v-flex>
     </v-layout>
   </v-container>
 </template>
 
 <script>
+import EditAdModal from "./EditAdModal";
+
 export default {
   props: ["id"],
   data() {
@@ -30,6 +43,12 @@ export default {
       const id = this.id;
       return this.$store.getters.adById(id);
     },
+    loading () {
+      return this.$store.getters.loading
+    }
   },
+  components: {
+    EditAdModal
+  }
 };
 </script>
